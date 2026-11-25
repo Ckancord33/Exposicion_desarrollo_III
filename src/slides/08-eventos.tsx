@@ -5,20 +5,20 @@ import { Chip, Code, SlideFrame } from '../components/ui'
 import { defineSlide } from '../deck/types'
 
 const nodes: DNode[] = [
-  { id: 'inc', x: 20, y: 120, w: 280, h: 130, label: 'MS Incidentes', sub: 'POST /incidents', icon: TriangleAlert, color: 'rose', at: 1 },
-  { id: 'broker', x: 460, y: 120, w: 320, h: 130, label: 'Broker (CloudEvents)', sub: 'AWS SNS/SQS · (antes RabbitMQ)', icon: Cloud, color: 'amber', at: 1 },
-  { id: 'dlq', x: 485, y: 315, w: 270, h: 95, label: 'DLQ', sub: 'tras 3 reintentos', icon: ShieldAlert, color: 'rose', at: 1 },
-  { id: 'mnt', x: 920, y: 95, w: 340, h: 180, label: 'MS Mantenimiento', sub: 'Idempotente + Outbox', icon: Wrench, color: 'cyan', glow: true },
-  { id: 'not', x: 1390, y: 20, w: 280, h: 125, label: 'MS Notificaciones', sub: 'alerta por correo', icon: Bell, color: 'violet', at: 2 },
-  { id: 'veh', x: 1390, y: 220, w: 280, h: 125, label: 'MS Vehículos', sub: 'vuelve a ACTIVO', icon: Truck, color: 'green', at: 3 },
+  { id: 'inc', x: 10, y: 120, w: 220, h: 125, label: 'MS Incidentes', sub: 'POST /incidents', icon: TriangleAlert, color: 'rose', at: 1 },
+  { id: 'broker', x: 490, y: 120, w: 270, h: 125, label: 'Broker (CloudEvents)', sub: 'AWS SNS/SQS · antes RabbitMQ', icon: Cloud, color: 'amber', at: 1 },
+  { id: 'dlq', x: 515, y: 315, w: 220, h: 95, label: 'DLQ', sub: 'tras 3 reintentos', icon: ShieldAlert, color: 'rose', at: 1 },
+  { id: 'mnt', x: 970, y: 95, w: 260, h: 175, label: 'MS Mantenimiento', sub: 'Idempotente + Outbox', icon: Wrench, color: 'cyan', glow: true },
+  { id: 'not', x: 1465, y: 15, w: 210, h: 120, label: 'MS Notificaciones', sub: 'alerta por correo', icon: Bell, color: 'violet', at: 2 },
+  { id: 'veh', x: 1465, y: 230, w: 210, h: 120, label: 'MS Vehículos', sub: 'vuelve a ACTIVO', icon: Truck, color: 'green', at: 3 },
 ]
 
 const edges: DEdge[] = [
-  { from: 'inc', to: 'broker', at: 1, color: 'rose', packets: 2, label: 'incidente.reportado', labelDy: -28 },
-  { from: 'broker', to: 'mnt', at: 1, color: 'rose', packets: 2, label: 'crea correctivo', labelDy: -28 },
-  { from: 'broker', to: 'dlq', at: 1, color: 'rose', dashed: true, label: 'fallo' },
-  { from: 'mnt', to: 'not', at: 2, color: 'violet', packets: 2, label: 'PreventivoRequerido', labelDx: -10, labelDy: -24 },
-  { from: 'mnt', to: 'veh', at: 3, color: 'green', packets: 2, label: 'MantenimientoFinalizado', labelDx: -10, labelDy: 24 },
+  { from: 'inc', to: 'broker', at: 1, color: 'rose', packets: 2, label: 'incidente.reportado', labelDx: -78 },
+  { from: 'broker', to: 'mnt', at: 1, color: 'rose', packets: 2, label: 'crea correctivo', labelDx: -62 },
+  { from: 'broker', to: 'dlq', at: 1, color: 'rose', dashed: true, label: 'fallo', labelDx: 18 },
+  { from: 'mnt', to: 'not', at: 2, color: 'violet', packets: 2, label: 'PreventivoRequerido', labelDx: -80 },
+  { from: 'mnt', to: 'veh', at: 3, color: 'green', packets: 2, label: 'MantenimientoFinalizado', labelDx: -94 },
 ]
 
 const cloudEventExample = `{
@@ -40,7 +40,15 @@ function Eventos() {
         </>
       }
     >
-      <Diagram width={1680} height={425} nodes={nodes} edges={edges} />
+      <div className="eventos-diagram">
+        <style>{`
+          .eventos-diagram .dedge-label {
+            font-size: 14px !important;
+            padding: 3px 10px !important;
+          }
+        `}</style>
+        <Diagram width={1680} height={425} nodes={nodes} edges={edges} />
+      </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 640px', gap: 28, marginTop: 18, alignItems: 'center' }}>
         <Reveal at={2} from="left">
