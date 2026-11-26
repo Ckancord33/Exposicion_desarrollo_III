@@ -7,11 +7,12 @@ import { useStep } from '../deck/context'
 import { defineSlide } from '../deck/types'
 import { colors, rgba } from '../theme'
 
+// Reglas reales de los rulesets "main" y "develop" del repositorio (API de GitHub).
 const rules = [
-  'Sin push directo a main ni a develop',
+  'Sin push directo, force-push ni borrado de main y develop',
   'Pull Request obligatorio con plantilla (.github/PULL_REQUEST_TEMPLATE.md)',
-  'Aprobación mínima de al menos 1 revisor del equipo',
-  'Checks de CI y Qodo AI obligatorios antes del merge',
+  'main exige 1 aprobación del equipo antes del merge',
+  'Check de CI «Build, Lint, Test & Coverage» obligatorio y rama al día',
 ]
 
 function ArquetipoRamas() {
@@ -42,17 +43,17 @@ function ArquetipoRamas() {
           </Reveal>
 
           <Terminal
-            title="arquetipo · src/main/java/.../mantenimiento"
+            title="arquetipo · .../mantenimiento"
             at={1}
             size={21}
             step={0.12}
             lines={[
-              { text: 'domain/model/         # Java 21 puro (7 entidades + enums)', color: 'cyan' },
-              { text: 'domain/port/in/       # 10 UseCases (HU-01..HU-09 + Outbox)', color: 'cyan' },
-              { text: 'domain/port/out/      # 7 Outbound Ports', color: 'cyan' },
-              { text: 'application/service/  # Orquestación y reglas de flujo', color: 'blue' },
-              { text: 'infrastructure/       # Web, Persistence, Messaging, Client', color: 'green' },
-              { text: 'db/migration/         # Flyway V1__init + V2__schema_fixes', color: 'amber' },
+              { text: 'domain/model/        # 7 entidades + enums', color: 'cyan' },
+              { text: 'domain/port/in/      # 10 casos de uso', color: 'cyan' },
+              { text: 'domain/port/out/     # 7 puertos de salida', color: 'cyan' },
+              { text: 'application/service/ # orquestación', color: 'blue' },
+              { text: 'infrastructure/      # web, JPA, SNS, HTTP', color: 'green' },
+              { text: 'db/migration/        # Flyway V1 + V2', color: 'amber' },
             ]}
           />
         </div>
@@ -137,12 +138,12 @@ export default defineSlide({
   minutes: 1.5,
   notes: `
 ## Qué decir
-- [Paso 0-1] Inicializamos el repo en ` + '`FleetOpsProyect/grupo_03_mantenimiento`' + ` con Spring Initializr (Java 21 + Spring Boot 3.4.3 + Gradle). Usando el **DAS como contexto para la IA**, generamos el arquetipo hexagonal completo: dominio puro, 10 puertos de entrada, 7 puertos de salida, mappers, entidades JPA y migraciones Flyway ` + '`V1__init_schema.sql`' + ` y ` + '`V2__schema_fixes.sql`' + `.
+- [Paso 0-1] Inicializamos el repo en ` + '`FleetOpsProyect/grupo_03_mantenimiento`' + ` con Spring Initializr (Java 21 + Spring Boot 3.4.3 + Gradle). Usando el **DAS como contexto para la IA**, generamos el arquetipo hexagonal completo: un dominio sin dependencias de Spring (7 entidades + enums, solo Lombok), 10 puertos de entrada (uno por historia de usuario más el relay del Outbox), 7 puertos de salida, mappers, entidades JPA y migraciones Flyway ` + '`V1__init_schema.sql`' + ` y ` + '`V2__schema_fixes.sql`' + `.
 - [Paso 2] Definimos un GitFlow práctico: cada integrante trabaja en su rama personal identificada con **sus iniciales** (` + '`nco`' + `, ` + '`jss`' + `, ` + '`maj`' + `, ` + '`DAR`' + `, ` + '`jsfv`' + `), usando Conventional Commits.
-- [Paso 3] Protegimos ` + '`main`' + ` y ` + '`develop`' + ` con **Rulesets en GitHub**:
-  - Prohibido hacer ` + '`push`' + ` directo a ` + '`main`' + ` o ` + '`develop`' + `.
-  - Obligatorio abrir Pull Request (usando la plantilla de checklist hexagonal).
-  - Obligatoria revisión humana de un compañero + checks de integración continua en verde.
+- [Paso 3] Protegimos ` + '`main`' + ` y ` + '`develop`' + ` con **Rulesets en GitHub** (activos):
+  - Nadie puede hacer ` + '`push`' + ` directo, force-push ni borrar ` + '`main`' + ` o ` + '`develop`' + `: todo entra por Pull Request (con la plantilla de checklist hexagonal).
+  - El check de CI **«Build, Lint, Test & Coverage»** es obligatorio en ambas ramas, y la rama del PR debe estar al día con la base (política estricta).
+  - ` + '`main`' + ` además exige **1 aprobación** de un compañero; en ` + '`develop`' + ` la revisión la apoya **Qodo AI**, que comenta el PR pero no bloquea el merge.
   - Solo de ` + '`develop`' + ` se promueve a ` + '`main`' + ` cuando el incremento está validado para producción.
 `,
   Component: ArquetipoRamas,

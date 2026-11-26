@@ -9,10 +9,10 @@ import { colors, rgba } from '../theme'
 
 const ciSteps = [
   { label: 'PostgreSQL 16 service + JDK 21', icon: TermIcon, color: 'blue' as const },
-  { label: 'Checkstyle (Google Java Style)', icon: ShieldCheck, color: 'cyan' as const },
+  { label: 'Checkstyle (checkstyle.xml)', icon: ShieldCheck, color: 'cyan' as const },
   { label: 'Tests unitarios + Testcontainers', icon: FlaskConical, color: 'violet' as const },
-  { label: 'JaCoCo ≥ 80% cobertura (96% alcanzado)', icon: CheckCircle2, color: 'green' as const },
-  { label: 'SonarCloud Quality Gate', icon: Sparkles, color: 'amber' as const },
+  { label: 'JaCoCo ≥ 80% cobertura (92% alcanzado)', icon: CheckCircle2, color: 'green' as const },
+  { label: 'SonarCloud (análisis estático)', icon: Sparkles, color: 'amber' as const },
   { label: 'bootJar ejecutable', icon: Container, color: 'cyan' as const },
 ]
 
@@ -41,7 +41,7 @@ function CiCd() {
           <div className="card" style={{ padding: 26, flex: 1 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
               <strong style={{ fontSize: 28, color: colors.cyan }}>CI Pipeline (ci.yml)</strong>
-              <Chip color="cyan" style={{ fontSize: 18 }}>PR → develop / main</Chip>
+              <Chip color="cyan" style={{ fontSize: 18 }}>PR / push → develop</Chip>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {ciSteps.map((s, i) => {
@@ -146,9 +146,9 @@ export default defineSlide({
   notes: `
 ## Qué decir
 - Aquí conectamos la exigencia DevOps del curso con nuestros tres workflows en GitHub Actions:
-- [Paso 1-2] **Integración Continua (\`ci.yml\`)**: cada Pull Request hacia \`develop\` o \`main\` levanta un servicio real de PostgreSQL 16, ejecuta **Checkstyle**, corre todas las pruebas unitarias e integración (con **Testcontainers**), exige **mínimo 80% de cobertura en JaCoCo** (llegamos hasta el 96% en la capa de persistencia), envía métricas a **SonarCloud** para validar el Quality Gate y compila el \`bootJar\`.
-- [Paso 2] **Revisión con IA (\`qodo-review.yml\`)**: en paralelo, cuando alguien abre PR hacia \`develop\`, Qodo (\`pr-agent\` usando Gemini) revisa el diff automáticamente, deja sugerencias y detecta bugs (por ejemplo, nos ayudó a corregir mapeos bidireccionales JPA, el \`FOR UPDATE SKIP LOCKED\` del outbox y el endurecimiento de Actuator).
-- [Paso 3] **Despliegue Continuo (\`cd.yml\`)**: al hacer merge a \`main\`, construye la imagen con nuestro **Dockerfile multi-stage** (usuario no-root \`spring\` y healthcheck), la publica en **Docker Hub** (\`ckancord33/fleetops-mantenimiento\`) etiquetada con \`:latest\` y el SHA exacto del commit, entra por SSH a nuestra instancia **AWS EC2** y actualiza el contenedor con \`docker compose pull && up -d --no-build\`.
+- [Paso 1-2] **Integración Continua (\`ci.yml\`)**: cada Pull Request hacia \`develop\` (y cada push a \`develop\`) levanta un servicio real de PostgreSQL 16, ejecuta **Checkstyle** con nuestras reglas (\`checkstyle.xml\`), corre las 74 pruebas unitarias e integración (con **Testcontainers**), exige **mínimo 80% de cobertura en JaCoCo** (hoy estamos en **92%** de instrucciones), envía el análisis a **SonarCloud** y compila el \`bootJar\`. Este job es el check obligatorio de los rulesets: el PR de \`develop\` a \`main\` usa el resultado que ya quedó en verde sobre \`develop\`.
+- [Paso 2] **Revisión con IA (\`qodo-review.yml\`)**: en paralelo, cuando alguien abre PR hacia \`develop\`, Qodo (\`pr-agent\` usando Gemini) revisa el diff automáticamente, deja sugerencias y detecta bugs (por ejemplo, nos ayudó a corregir mapeos bidireccionales JPA, el \`FOR UPDATE SKIP LOCKED\` del outbox y el endurecimiento de Actuator). Es una ayuda para el revisor: comenta, pero no bloquea el merge.
+- [Paso 3] **Despliegue Continuo (\`cd.yml\`)**: al hacer merge a \`main\`, construye la imagen con nuestro **Dockerfile multi-stage** (usuario no-root \`spring\` y healthcheck), la publica en **Docker Hub** (\`ckancord33/fleetops-mantenimiento\`) etiquetada con \`:latest\` y el SHA exacto del commit, copia por SCP el \`docker-compose.prod.yml\` (el \`.env\` con secretos ya vive en el servidor y nunca se sube), entra por SSH a nuestra instancia **AWS EC2** y actualiza el contenedor con \`docker compose pull && up -d --no-build\`. El \`HEALTHCHECK\` del Dockerfile consulta la readiness del Actuator en el puerto de gestión 18001.
 `,
   Component: CiCd,
 })

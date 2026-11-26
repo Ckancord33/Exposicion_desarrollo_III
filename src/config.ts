@@ -16,8 +16,8 @@ export const config = {
   dockerImage: 'ckancord33/fleetops-mantenimiento',
 
   deploy: {
-    // TODO: reemplazar por el subdominio real de DuckDNS.
-    domain: 'TU-SUBDOMINIO.duckdns.org',
+    // Dominio real (certificado Let's Encrypt valido hasta enero de 2027).
+    domain: 'fleetops-mantenimiento.duckdns.org',
     port: 6767,
   },
 }
