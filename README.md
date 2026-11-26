@@ -4,7 +4,7 @@ Presentación interactiva en **React + TypeScript + Framer Motion** para la expo
 Documenta todo el flujo trabajado por la célula de Mantenimiento: desde la comprensión del problema hasta el despliegue continuo en AWS EC2 y la implementación de la **HU-01**.
 
 - **Repositorio del microservicio:** https://github.com/FleetOpsProyect/grupo_03_mantenimiento
-- **Duración objetivo:** máximo **20 minutos** (plan actual: **18.75 min** en 15 diapositivas).
+- **Duración objetivo:** máximo **20 minutos** (plan actual: **19.5 min** en 15 diapositivas).
 - **Documentación fuente:** [`docs/`](./docs)
 
 ---
@@ -78,7 +78,7 @@ Para **cambiar el orden, ocultar o agregar diapositivas**, solo edita [`src/slid
 
 ---
 
-## 4. Flujo de la exposición (15 diapositivas · 18.75 min)
+## 4. Flujo de la exposición (15 diapositivas · 19.5 min)
 
 | # | Diapositiva | Archivo | Contenido principal | Min |
 |---|---|---|---|---|
@@ -86,8 +86,8 @@ Para **cambiar el orden, ocultar o agregar diapositivas**, solo edita [`src/slid
 | 02 | El problema | `02-problema.tsx` | FleetCorp (+250 vehículos), gestión manual y dolores del dominio | 0.75 |
 | 03 | Qué hace el microservicio | `03-que-hace.tsx` | Preventivo (Scheduler 02:00), Correctivo (eventos) e integraciones | 1.25 |
 | 04 | Product Backlog y Sprints | `04-backlog.tsx` | Prompt IA (IEEE 29148), actores, 9 HUs, MoSCoW, 68 pts y 5 sprints | 1.50 |
-| 05 | Arquitectura Hexagonal | `05-arquitectura.tsx` | DAS: regla de dependencia hacia núcleo Java 21, puertos y adaptadores | 1.50 |
-| 06 | ISO 25010 y Patrones | `06-calidad.tsx` | Atributos de calidad mapeados a Outbox, Saga, Circuit Breaker, Strategy, etc. | 1.50 |
+| 05 | Arquitectura Hexagonal | `05-arquitectura.tsx` | DAS: núcleo Java 21, 9 puertos de entrada, adaptadores de entrada/salida, regla de dependencia y prueba real RabbitMQ → SNS/SQS | 1.75 |
+| 06 | ISO 25010 y Patrones | `06-calidad.tsx` | 9 atributos ISO 25010 que se van cubriendo con 5 patrones animados: Outbox, Circuit Breaker + Saga, Rule Engine + Strategy, Borde seguro, Recursos/Despliegue | 2.00 |
 | 07 | Endpoints y Payloads | `07-endpoints.tsx` | Inspector interactivo de endpoints REST + payloads cubriendo HU-01..HU-09 | 1.50 |
 | 08 | Catálogo de Eventos | `08-eventos.tsx` | CloudEvents v1.0, evento entrante/salientes, DLQ y evolución RabbitMQ → SNS/SQS | 1.25 |
 | 09 | Modelo Relacional | `09-modelo-datos.tsx` | 7 tablas en PostgreSQL/Supabase, Flyway V1/V2 e índices únicos parciales | 1.25 |

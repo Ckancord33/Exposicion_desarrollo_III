@@ -17,7 +17,7 @@ Este archivo define las reglas obligatorias para cualquier agente o colaborador 
 
 1. **Duración máxima: 20 minutos.**
    - La suma de `minutes` de todas las diapositivas en `src/slides/index.ts` **nunca debe superar `20`** (`config.totalMinutes` en `src/config.ts`).
-   - Actualmente las 15 diapositivas suman **18.75 minutos**, dejando ~1.25 minutos de margen.
+   - Actualmente las 15 diapositivas suman **19.5 minutos**, dejando ~0.5 minutos de margen.
 2. **Mínimo texto en pantalla.**
    - Las diapositivas deben priorizar diagramas animados (`Diagram`), tarjetas cortas, código puntual (`Code` / `Terminal`) y chips visuales.
    - Evitar párrafos largos en el escenario (`1920x1080`).
